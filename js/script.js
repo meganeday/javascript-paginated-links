@@ -1,50 +1,88 @@
-/******************************************
-Treehouse Techdegree:
-FSJS project 2 - List Filter and Pagination
-******************************************/
+// Global Variables
+
+const li = document.querySelectorAll("li")
+const perPage = 10;
+
+
+// showPage function
+// limits 10 list items to each "page"
+// & specifies which 10 list items are shown
+// on each "page"
+
+const showPage = (list, section) => {
+
+   const start = (section * perPage) - perPage;
+   const stop = (section * perPage);
+
+   // Loop over items in the list parameter
+   // How do I get this to work without line 32?
+   for (let i=0; i<list.length; i+=1) {
+      if (i >= start && i < stop) {
+         console.log(list[i]);
+      } else {
+         list[i].style.display = "none"
+      }
+   }
+}
+
+
+//appendPageLinks function
+//generates & adds functionality to pagination links
+
+const appendPageLinks = (list) => {
+
+   //generate a container for pagination links
+   //and append to page
+
+   const page = document.querySelector('div.page')
+   const container = document.createElement('div');
+   container.className = "pagination";
+   page.appendChild(container);
    
-// Study guide for this project - https://drive.google.com/file/d/1OD1diUsTMdpfMDv677TfL1xO2CEkykSz/view?usp=sharing
-
-
-/*** 
-   Add your global variables that store the DOM elements you will 
-   need to reference and/or manipulate. 
+   const listOfPages = document.createElement("ul");
+   container.appendChild(listOfPages);
    
-   But be mindful of which variables should be global and which 
-   should be locally scoped to one of the two main functions you're 
-   going to create. A good general rule of thumb is if the variable 
-   will only be used inside of a function, then it can be locally 
-   scoped to that function.
-***/
+   //calculate number of pagination links to render
 
+   let numberOfPages = Math.ceil(list.length / perPage);
 
+   //render pagination links to page
 
+   for (let i=0; i <= numberOfPages; i++) {
+      let pageLink = document.createElement("li")
 
-/*** 
-   Create the `showPage` function to hide all of the items in the 
-   list except for the ten you want to show.
+   //need to edit href
+   //need to edit href
+   //need to edit href
+      let pageLinkInnerHTML = `
+         <a href=#i>${i+1}</a>
+      `
+      pageLink.innerHTML = pageLinkInnerHTML;
+      listOfPages.appendChild(pageLink);
+   }
 
-   Pro Tips: 
-     - Keep in mind that with a list of 54 students, the last page 
-       will only display four.
-     - Remember that the first student has an index of 0.
-     - Remember that a function `parameter` goes in the parens when 
-       you initially define the function, and it acts as a variable 
-       or a placeholder to represent the actual function `argument` 
-       that will be passed into the parens later when you call or 
-       "invoke" the function 
-***/
+   //toggle which pagination link is active
 
+   const pageButtons = document.querySelectorAll('a')
 
+   const setAction = (e) => {
+      for (let i=0; i<pageButtons.length; i++) {
+         pageButtons[i].classList.remove('active')
+      }
+      const target = e.target
+      target.classList.add('active')
+   }
 
+   //add event listeners to pagination links
 
-/*** 
-   Create the `appendPageLinks function` to generate, append, and add 
-   functionality to the pagination buttons.
-***/
+   for(let i=0; i<pageButtons.length; i++) {
+      pageButtons[i].addEventListener('click', (e) => {
+         setAction(e)
+      })
+   }
+}
 
+//call functions
 
-
-
-
-// Remember to delete the comments that came with this file, and replace them with your own code comments.
+appendPageLinks(li);
+showPage(li, 1);
