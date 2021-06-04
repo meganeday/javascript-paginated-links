@@ -3,7 +3,6 @@
 const li = document.querySelectorAll("li")
 const perPage = 10;
 
-
 // showPage function
 // limits 10 list items to each "page"
 // & specifies which 10 list items are shown
@@ -18,13 +17,12 @@ const showPage = (list, section) => {
    // How do I get this to work without line 32?
    for (let i=0; i<list.length; i+=1) {
       if (i >= start && i < stop) {
-         console.log(list[i]);
+         list[i].style.display = "default";
       } else {
          list[i].style.display = "none"
       }
    }
 }
-
 
 //appendPageLinks function
 //generates & adds functionality to pagination links
@@ -50,12 +48,8 @@ const appendPageLinks = (list) => {
 
    for (let i=0; i <= numberOfPages; i++) {
       let pageLink = document.createElement("li")
-
-   //need to edit href
-   //need to edit href
-   //need to edit href
       let pageLinkInnerHTML = `
-         <a href=#i>${i+1}</a>
+         <a href=#>${i+1}</a>
       `
       pageLink.innerHTML = pageLinkInnerHTML;
       listOfPages.appendChild(pageLink);
@@ -73,11 +67,12 @@ const appendPageLinks = (list) => {
       target.classList.add('active')
    }
 
-   //add event listeners to pagination links
+   // add event listeners to pagination links
 
    for(let i=0; i<pageButtons.length; i++) {
       pageButtons[i].addEventListener('click', (e) => {
-         setAction(e)
+         setAction(e);
+         showPage(li, pageButtons[i].innerText.value);
       })
    }
 }
