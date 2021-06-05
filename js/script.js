@@ -17,7 +17,7 @@ const showPage = (list, section) => {
    // How do I get this to work without line 32?
    for (let i=0; i<list.length; i+=1) {
       if (i >= start && i < stop) {
-         list[i].style.display = "default";
+         list[i].style.display = "block";
       } else {
          list[i].style.display = "none"
       }
@@ -46,7 +46,7 @@ const appendPageLinks = (list) => {
 
    //render pagination links to page
 
-   for (let i=0; i <= numberOfPages; i++) {
+   for (let i=0; i < numberOfPages; i++) {
       let pageLink = document.createElement("li")
       let pageLinkInnerHTML = `
          <a href=#>${i+1}</a>
@@ -72,7 +72,7 @@ const appendPageLinks = (list) => {
    for(let i=0; i<pageButtons.length; i++) {
       pageButtons[i].addEventListener('click', (e) => {
          setAction(e);
-         showPage(li, pageButtons[i].innerText.value);
+         showPage(li, pageButtons[i].innerText);
       })
    }
 }
