@@ -1,10 +1,22 @@
-// Global Variables
+// GLOBAL VARIABLES
 
 const li = document.querySelectorAll('li')
 const ul = document.querySelector('ul.student-list')
 const headerDiv = document.querySelector('div.page-header')
 const page = document.querySelector('div.page')
 const perPage = 10
+
+//generate a container for pagination links
+//and append to page
+
+const container = document.createElement('div');
+container.className = "pagination"
+page.appendChild(container);
+
+const listOfPages = document.createElement("ul");
+container.appendChild(listOfPages)
+
+//FUNCTIONS
 
 // showPage function
 // limits 10 list items to each "page"
@@ -32,16 +44,6 @@ const showPage = (list, section) => {
 
 const appendPageLinks = (list) => {
 
-   //generate a container for pagination links
-   //and append to page
-
-   const container = document.createElement('div');
-   container.className = "pagination"
-   page.appendChild(container);
-   
-   const listOfPages = document.createElement("ul");
-   container.appendChild(listOfPages)
-   
    //calculate number of pagination links to render
 
    let numberOfPages = Math.ceil(list.length / perPage);
@@ -83,38 +85,39 @@ const appendPageLinks = (list) => {
 appendPageLinks(li)
 showPage(li, 1)
 
+
 //*~*~*~ exceeds code *~*~*~
 
 //generate a div containing search bar
 //& append to page
 
 const searchDiv = document.createElement('div')
-searchDiv.className = "student-search";
-headerDiv.appendChild(searchDiv);
+searchDiv.className = "student-search"
+headerDiv.appendChild(searchDiv)
 
 const searchBar = document.createElement('input')
 searchBar.placeholder = "Search for students..."
 searchDiv.appendChild(searchBar)
 
-//add event listener to handle search bar
-const handleSearch = () => {
-   searchBar.addEventListener('change', (e) => {
-      let newList = "";
-      for (let i=0; i<li.length; i++) {
-         if (li[i].innerText.toLowerCase().includes(searchBar.value.toLowerCase())) {
-            newList = [...newList, li[i]]
-         }
+const noMatch = document.createElement('h2')
+noMatch.InnerText = "Sorry, no matches. Try again."
+
+//handleSearch function
+//filters through names based on search bar input
+const handleSearch = (searchInput, names) => {
+   let newList = [];
+   for (let i = 0; i < names.length; i++) {
+      if(searchInput.length !== 0 && names[i].textContent.toLowerCase().includes(searchInput.toLowerCase())) {
+         newList = [...newList, names[i]]
+         showPage(newList, 1)
+      } else {
+         page.appendChild(noMatch)
       }
-      //handle search errors
-      if (newList.length == 0) {
-         ul.innerHTML= `
-            <h1>Sorry, this search has no matches.</h1>
-         `
-      }
-      appendPageLinks(newList)
-      showPage(newList, 1)
-   })
+   }
 }
 
-//call functions
-handleSearch()
+//add event listener to search bar
+searchBar.addEventListener('keyup', (e) => {
+   e.preventDefault()
+   handleSearch(e.target.value, li)
+})
