@@ -6,15 +6,10 @@ const headerDiv = document.querySelector('div.page-header')
 const page = document.querySelector('div.page')
 const perPage = 10
 
-//generate a container for pagination links
-//and append to page
-
-const container = document.createElement('div');
-container.className = "pagination"
-page.appendChild(container);
-
-const listOfPages = document.createElement("ul");
-container.appendChild(listOfPages)
+//create div to hold pagination links
+const pageLinksContainer = document.createElement('div')
+pageLinksContainer.className = "pagination"
+page.append(pageLinksContainer)
 
 //FUNCTIONS
 
@@ -43,6 +38,12 @@ const showPage = (list, section) => {
 //generates & adds functionality to pagination links
 
 const appendPageLinks = (list) => {
+
+   //generate a ul for pagination links
+   //and append to pageLinksContainer
+
+   const listOfPages = document.createElement("ul");
+   pageLinksContainer.appendChild(listOfPages)
 
    //calculate number of pagination links to render
 
@@ -100,20 +101,33 @@ searchBar.placeholder = "Search for students..."
 searchDiv.appendChild(searchBar)
 
 const noMatch = document.createElement('h2')
-noMatch.InnerText = "Sorry, no matches. Try again."
+noMatch.innerText = "Sorry, no matches. Try again."
 
 //handleSearch function
 //filters through names based on search bar input
 const handleSearch = (searchInput, names) => {
-   let newList = [];
+   //create an array to hold search matches
+   let newList = []
+
+   //clear pagination links
+   pageLinksContainer.innerHTML = ""
+
+   //conditional that instructs only search matches to render to page
    for (let i = 0; i < names.length; i++) {
-      if(searchInput.length !== 0 && names[i].textContent.toLowerCase().includes(searchInput.toLowerCase())) {
-         newList = [...newList, names[i]]
-         showPage(newList, 1)
+      if(searchInput.length !== 0 && !names[i].textContent.toLowerCase().includes(searchInput.toLowerCase())) {
+         names[i].style.display = "none"
       } else {
-         page.appendChild(noMatch)
+         names[i].style.display = "block"
+         //append search matches to new array
+         newList = [...newList, names[i]]
       }
    }
+   
+   //ternary operator instructs page to return
+   //error message if search has no matches
+   //OR append pagination links
+   newList.length == 0 ? page.append(noMatch) : appendPageLinks(newList)
+
 }
 
 //add event listener to search bar
